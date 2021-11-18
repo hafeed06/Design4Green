@@ -61,8 +61,8 @@ $(document).ready(function () {
 <td style="max-width:14%">` + jscontent[e].recommendation + `<td/>
 <td style="max-width:14%">` + jscontent[e].criterias + `<td/>
 <td style="max-width:14%">` + jscontent[e].priority + `<td/>
-<td style="max-width:14%"><button type="button" class="btn btn-primary custom-modal" id="` + i + `" data-toggle="modal" data-target="#exampleModal">
-DETAILS
+<td style="max-width:14%"><button type="button" class="btn btn-outline-success custom-modal" id="` + i + `" data-cat-index="${i}" data-index="${e}" onclick="showDetails(this)" data-toggle="modal" data-target="#exampleModal">
+Show details
 </button><td/>
 <td style="max-width:14%">
 <div class="form-check form-switch">
@@ -128,6 +128,20 @@ function remProduct(newproduct, button) {
   displayProduct();
 }
 
+function showDetails(element) {
+  const cat = cats[element.dataset.catIndex]
+  const products = Object.fromEntries(
+      Object.entries(types).filter(([key, value]) => value === cat))
+  const { scores, recommendation, criterias, priority } = jscontent[element.dataset.index]
+
+  document.getElementById("recommendation-details").innerHTML = recommendation
+  document.getElementById("criteria-details").innerHTML = criterias
+  document.getElementById("priority-details").innerHTML = priority
+  document.getElementById("people-details").innerHTML = scores.people
+  document.getElementById("planet-details").innerHTML = scores.planet
+  document.getElementById("prosperity-details").innerHTML = scores.prosperity
+
+}
 
 function displayProduct() {
   console.log("___")

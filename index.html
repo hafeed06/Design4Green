@@ -32,7 +32,7 @@
 <div style="text-align:center; padding:20px">
   <div class="mt-5 p-5">
     <h1 class="display-4">Best Green IT Practices Generator</h1>
-    <h5 class="lead text-muted">In addition to the Mandatory Practices, choose at least 75 for a successful
+    <h3 class="lead text-muted">In addition to the Mandatory Practices, choose at least 75 for a successful
       project </h3>
   </div>
 
@@ -83,19 +83,44 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Practice details</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="d-flex">
+          <div class="my-3 mr-3">
+            <div class="h6 text-secondary">Priority</div>
+            <div id="priority-details" class="lead">High</div>
+          </div>
+          <div class="m-3">
+            <div class="h6 text-secondary">People</div>
+            <div id="people-details" class="lead">A</div>
+          </div>
+          <div class="m-3">
+            <div class="h6 text-secondary">Priority</div>
+            <div id="planet-details" class="lead">B</div>
+          </div>
+          <div class="m-3">
+            <div class="h6 text-secondary">Prosperity</div>
+            <div id="prosperity-details" class="lead">V</div>
+          </div>
+        </div>
+
+
+        <div class="my-3">
+          <div class="h6 text-secondary">Recommendation</div>
+          <div id="recommendation-details" class="lead">Définir et valider les besoins et les enjeux du projet afin d'anticiper les impacts</div>
+        </div>
+
+        <div class="my-3">
+          <div class="h6 text-secondary">Criteria</div>
+          <div id="criteria-details" class="lead">Les réunions sont-elles limitées au strict minimum, en privilégiant le distanciel, lorsque les réunions nécessitent des déplacements physiques ?</div>
+        </div>
       </div>
     </div>
   </div>
