@@ -1,29 +1,31 @@
-let descriptions = []; 
+let descriptions = [];
 descriptions.push("None")
 descriptions.push("The First One");
 descriptions.push("The Second One");
-$(function(){
-    $('.custom-modal').click(function(e){
-      e.preventDefault();
-      console.log(this.id)
-      var mymodal = $('#exampleModal');
-      let content = descriptions[this.id]
-      console.log(content)
-      mymodal.find('.modal-body').text(content);
-      mymodal.modal('show'); 
-    });
-  })
+$(function () {
+  $('.custom-modal').click(function (e) {
+    e.preventDefault();
+    console.log(this.id)
+    var mymodal = $('#exampleModal');
+    let content = descriptions[this.id]
+    console.log(content)
+    mymodal.find('.modal-body').text(content);
+    mymodal.modal('show');
+  });
+})
 
 let types = {}
-for(i=0; i < jscontent.length; i++) types[i] = jscontent[i].family
+for (i = 0; i < jscontent.length; i++) types[i] = jscontent[i].family
 let cats = ['STRATEGIE', 'SPECIFICATIONS', 'UX-UI', 'CONTENUS', 'ARCHITECTURE', 'FRONTEND', 'BACKEND', 'HEBERGEMENT']
-$(document).ready(function(){
-window.localStorage.clear()
-document.getElementById("download").disabled = true;
-for(let i = 0; i < cats.length; i++) {
-let content = `
+$(document).ready(function () {
+  window.localStorage.clear()
+  document.getElementById("download").disabled = true;
+  let x;
+  let searchFor;
+  for (let i = 0; i < cats.length; i++) {
+    let content = `
 <div id="${cats[i]}" class="pracTables">
-<h3>${cats[i]}</h3>
+<h3 class="p-3">${cats[i]}</h3>
 <table class="table table-hover" style="width:90%; margin-left:auto; margin-right:auto; ">
 <thead>
 <tr style="font-weight:bold">
@@ -37,74 +39,89 @@ let content = `
 </tr>
 </thead>
 <tbody>`
-searchFor = cats[i]
-const filteredByValue = Object.fromEntries(
-Object.entries(types).filter(([key, value]) => value === searchFor))
+    searchFor = cats[i]
+    const filteredByValue = Object.fromEntries(
+        Object.entries(types).filter(([key, value]) => value === searchFor))
 
-x = Object.keys(filteredByValue).forEach(e => {
-let checked = jscontent[e].mustHave == "INCONTOURNABLE"?"checked":""
-let disabled = jscontent[e].mustHave == "INCONTOURNABLE"?"disabled":""  
-content+= `
-<tr class="table-active">
-<td style="max-width:14%">`+jscontent[e].family+`<td/>
-<td style="max-width:14%">`+jscontent[e].id+`<td/>
-<td style="max-width:14%">`+jscontent[e].recommendation+`<td/>
-<td style="max-width:14%">`+jscontent[e].criterias+`<td/>
-<td style="max-width:14%">`+jscontent[e].priority+`<td/>
-<td style="max-width:14%"><button type="button" class="btn btn-primary custom-modal" id="`+i+`" data-toggle="modal" data-target="#exampleModal">
+    x = Object.keys(filteredByValue).forEach(e => {
+      let checked = jscontent[e].mustHave == "INCONTOURNABLE" ? "checked" : ""
+      let disabled = jscontent[e].mustHave == "INCONTOURNABLE" ? "disabled" : ""
+
+      let button = `<label class="btn btn-outline-success add-practice-button" for="btn-check-outlined` + e + `" data-index="${e}">Add to cart</label><br>`
+
+      if (checked) {
+        button = `<label class="btn btn-outline-danger remove-practice-button" for="btn-check-outlined` + e + `" data-index="${e}">Remove</label><br>  `
+      }
+
+
+      content += `
+<tr class="">
+<td style="max-width:14%">` + jscontent[e].family + `<td/>
+<td style="max-width:14%">` + jscontent[e].id + `<td/>
+<td style="max-width:14%">` + jscontent[e].recommendation + `<td/>
+<td style="max-width:14%">` + jscontent[e].criterias + `<td/>
+<td style="max-width:14%">` + jscontent[e].priority + `<td/>
+<td style="max-width:14%"><button type="button" class="btn btn-primary custom-modal" id="` + i + `" data-toggle="modal" data-target="#exampleModal">
 DETAILS
 </button><td/>
 <td style="max-width:14%">
 <div class="form-check form-switch">
-<input type="checkbox" class="btn-check" id="btn-check-outlined`+e+`" autocomplete="off" ${checked} ${disabled}>
-<label class="btn btn-outline-primary" for="btn-check-outlined`+e+`">ADD</label><br>
+<input type="checkbox" class="btn-check d-none" id="btn-check-outlined` + e + `" autocomplete="off" ${checked} ${disabled} />
+${button}
 </div>
 <td/>
 </tr>`
-})
-content+= `
+    })
+
+
+    content += `
 </tbody>
 </table>
 </div></div>`
-$(".container-lg").append(content);
-$( ".pracTables" ).hide();
-}
+    $(".container-lg").append(content);
+    $(".pracTables").hide();
+  }
 
 
-// CheckBox Manipulation 
-let carts = document.querySelectorAll('.btn-check')
-let products = jscontent;
-console.log(carts.length)
-for (let i=0; i < carts.length; i++){
-  if(carts[i].checked) cartNumbers(products[i])
-  carts[i].addEventListener('click', () => {
-    if(carts[i].checked) cartNumbers(products[i]);
-    else remProduct(products[i]);
-  })
-}
+// CheckBox Manipulation
+  let carts = document.querySelectorAll('.btn-check')
+  let products = jscontent;
+  console.log(carts.length)
+  for (let i = 0; i < carts.length; i++) {
+    if (carts[i].checked) addProduct(products[i])
+    carts[i].addEventListener('click', event => {
+      const {target} = event
+      const button = target.nextElementSibling;
+      if (carts[i].checked) addProduct(products[i], button);
+      else remProduct(products[i], button);
+    })
+  }
 });
 
-// Set cart numbers
-function cartNumbers(product){
-  // Displays the product json data for which the add to cart is clicked
-  console.log("Product clicked is", product);
-  // setItems(product)
-  addProduct(product);
-}
-function addProduct(newproduct){
+
+function addProduct(newproduct, button) {
+  button?.classList.remove('btn-outline-success');
+  button?.classList.add('btn-outline-danger');
+  if (button) button.innerHTML = "Remove"
+
+
   let products = [];
-  if(localStorage.getItem('products')){
-      products = JSON.parse(localStorage.getItem('products'));
+  if (localStorage.getItem('products')) {
+    products = JSON.parse(localStorage.getItem('products'));
   }
   products.push(newproduct);
   localStorage.setItem('products', JSON.stringify(products));
   displayProduct();
 }
 
-function remProduct(newproduct){
+function remProduct(newproduct, button) {
+  button?.classList.add('btn-outline-success');
+  button?.classList.remove('btn-outline-danger');
+  if (button) button.innerHTML = "Add to cart"
+
   let products = [];
-  if(localStorage.getItem('products')){
-      products = JSON.parse(localStorage.getItem('products'));
+  if (localStorage.getItem('products')) {
+    products = JSON.parse(localStorage.getItem('products'));
   }
   products.pop(newproduct);
   localStorage.setItem('products', JSON.stringify(products));
@@ -112,17 +129,17 @@ function remProduct(newproduct){
 }
 
 
-function displayProduct(){
+function displayProduct() {
   console.log("___")
   var incartproducts = JSON.parse(localStorage.getItem("products"));
   console.log(incartproducts);
   const list = document.getElementById("basket");
-  if(incartproducts.length > 0) document.getElementById("download").disabled = false;
+  if (incartproducts.length > 0) document.getElementById("download").disabled = false;
   else document.getElementById("download").disabled = true;
   list.innerHTML = incartproducts.length;
 }
 
-function download(){
+function download() {
   var incartproducts = JSON.parse(localStorage.getItem("products"));
   var doc = new jsPDF();
   var table_body = []
@@ -130,10 +147,10 @@ function download(){
     table_body.push([row.family, row.scores.people, row.scores.planet, row.scores.prosperity, row.recommendation, row.justifications, row.lifecycleStage])
   }
   doc.autoTable({
-      head: [['Family', 'People Score', 'Planet Score', 'Prosperity', 'Reccomendation', 'Justification', 'Life cycle stage']],
-      body: table_body,
-      rowPageBreak: 'auto',
-      bodyStyles: { valign: 'top' }
+    head: [['Family', 'People Score', 'Planet Score', 'Prosperity', 'Reccomendation', 'Justification', 'Life cycle stage']],
+    body: table_body,
+    rowPageBreak: 'auto',
+    bodyStyles: {valign: 'top'}
   })
   doc.save('Test.pdf');
 }
