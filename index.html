@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="data.js"></script>
+<script src="main.js"></script> 
+
+<title>EPIGREEN - Best Practices</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand" href="#"><strong>EPIGREEN</strong>- Best Practices Generator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </nav>
+      <div style="text-align:center; padding:20px">
+        <h1>Welcome To Best Green IT Practices Generator</h1>
+        <h5>In addition to the Mandatory Practices, choose At Least 75 ones for a successful project! </h3>
+          <h5><strong>Practices Basket : <span id="basket"></span></strong></h3>
+          <script>
+            const Clicked = (e) => {
+              $( ".pracTables" ).hide();
+              $( "#"+e).show();
+            }
+          </script>
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="border-radius:4px !important">
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio1" autocomplete="off" style="display:none" checked>
+            <label class="btn btn-outline-primary" for="btnradio1" onclick="Clicked('STRATEGIE')">STRATEGIE</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio2" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio2" onclick="Clicked('SPECIFICATIONS')">SPECIFICATIONS</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio3" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio3" onclick="Clicked('UX-UI')">UX/UI</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio4" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio4" onclick="Clicked('CONTENUS')">CONTENUS</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio5" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio5" onclick="Clicked('ARCHITECTURE')">ARCHITECTURE</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio6" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio6" onclick="Clicked('FRONTEND')">FRONTEND</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio7" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio7" onclick="Clicked('BACKEND')">BACKEND</label>
+            <input type="radio" class="radio-check" name="btnradio" id="btnradio8" autocomplete="off" style="display:none">
+            <label class="btn btn-outline-primary" for="btnradio8" onclick="Clicked('HEBERGEMENT')">HEBERGEMENT</label>
+            <br /> 
+          </div>
+      </div>
+      <button type="button" id="download" class="btn btn-primary btn-lg btn-block" onclick="download()" style="width:30%; margin-left:auto; margin-right:auto">Download PDF</button>
+      <div class="container-lg" style="text-align:center;align-items: center; padding-top:2%"></div>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div> 
+</body>
+</html>
