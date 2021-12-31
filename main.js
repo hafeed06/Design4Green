@@ -1,3 +1,10 @@
+if ( 'serviceWorker' in navigator ){
+window.addEventListener('load', () =>{
+navigator.serviceWorker
+.register('sw_cached_pages.js')
+})
+
+}
 let descriptions = [];
 descriptions.push("None")
 descriptions.push("The First One");
@@ -5,10 +12,8 @@ descriptions.push("The Second One");
 $(function () {
   $('.custom-modal').click(function (e) {
     e.preventDefault();
-    console.log(this.id)
     var mymodal = $('#exampleModal');
     let content = descriptions[this.id]
-    console.log(content)
     mymodal.find('.modal-body').text(content);
     mymodal.modal('show');
   });
@@ -44,25 +49,31 @@ $(document).ready(function () {
         Object.entries(types).filter(([key, value]) => value === searchFor))
 
     x = Object.keys(filteredByValue).forEach(e => {
-      let checked = jscontent[e].mustHave == "INCONTOURNABLE" ? "checked" : ""
-      let disabled = jscontent[e].mustHave == "INCONTOURNABLE" ? "disabled" : ""
+      let checked = (jscontent[e].mustHave == "INCONTOURNABLE" && jscontent[e].family != "HEBERGEMENT")? "checked" : ""
+      let disabled = (jscontent[e].mustHave == "INCONTOURNABLE" && jscontent[e].family != "HEBERGEMENT") ? "disabled" : ""
 
-      let button = `<label class="btn btn-outline-success add-practice-button" for="btn-check-outlined` + e + `" data-index="${e}">Add to cart</label><br>`
+      let button = `<label class="btn btn-outline-success add-practice-button ${disabled}" for="btn-check-outlined${e}" data-index="${e}">Add to cart</label><br>`
 
-      if (checked) {
-        button = `<label class="btn btn-outline-danger remove-practice-button" for="btn-check-outlined` + e + `" data-index="${e}">Remove</label><br>  `
-      }
-
-
+let parent,cname; 
+if(!jscontent[e].id.includes(".")) {
+  parent=true;
+  cname="class='bg-success' style='color:white'"
+}
+else {
+  parent=false;
+  cname=""
+}
       content += `
-<tr class="">
+<tr ${cname}>
 <td style="max-width:14%">` + jscontent[e].family + `<td/>
-<td style="max-width:14%">` + jscontent[e].id + `<td/>
+<td style="max-width:14%">` + jscontent[e].id + `<td/>`
+if(parent) content+=`<td colspan="9" style="font-weight:bold">` + jscontent[e].recommendation + `<td/>`
+else content+=`
 <td style="max-width:14%">` + jscontent[e].recommendation + `<td/>
 <td style="max-width:14%">` + jscontent[e].criterias + `<td/>
 <td style="max-width:14%">` + jscontent[e].priority + `<td/>
-<td style="max-width:14%"><button type="button" class="btn btn-primary custom-modal" id="` + i + `" data-toggle="modal" data-target="#exampleModal">
-DETAILS
+<td style="max-width:14%"><button type="button" class="btn btn-outline-success custom-modal" id="` + i + `" data-cat-index="${i}" data-index="${e}" onclick="showDetails(this)" data-toggle="modal" data-target="#exampleModal">
+Show details
 </button><td/>
 <td style="max-width:14%">
 <div class="form-check form-switch">
@@ -86,7 +97,6 @@ ${button}
 // CheckBox Manipulation
   let carts = document.querySelectorAll('.btn-check')
   let products = jscontent;
-  console.log(carts.length)
   for (let i = 0; i < carts.length; i++) {
     if (carts[i].checked) addProduct(products[i])
     carts[i].addEventListener('click', event => {
@@ -128,11 +138,23 @@ function remProduct(newproduct, button) {
   displayProduct();
 }
 
+function showDetails(element) {
+  const cat = cats[element.dataset.catIndex]
+  const products = Object.fromEntries(
+      Object.entries(types).filter(([key, value]) => value === cat))
+  const { scores, recommendation, criterias, priority } = jscontent[element.dataset.index]
+
+  document.getElementById("recommendation-details").innerHTML = recommendation
+  document.getElementById("criteria-details").innerHTML = criterias
+  document.getElementById("priority-details").innerHTML = priority
+  document.getElementById("people-details").innerHTML = scores.people
+  document.getElementById("planet-details").innerHTML = scores.planet
+  document.getElementById("prosperity-details").innerHTML = scores.prosperity
+
+}
 
 function displayProduct() {
-  console.log("___")
   var incartproducts = JSON.parse(localStorage.getItem("products"));
-  console.log(incartproducts);
   const list = document.getElementById("basket");
   if (incartproducts.length > 0) document.getElementById("download").disabled = false;
   else document.getElementById("download").disabled = true;
